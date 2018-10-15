@@ -17,23 +17,25 @@ func main() {
 	fmt.Println("Содержимое файла stdin.txt:")
 	fmt.Printf(str)
 
-	var sl []int
-	for i := 0; i < len(strings.Split(str, " ")); i++ {
-		n, err := strconv.Atoi(strings.Split(str, " ")[i])
+	var sl []string
+	var slInt []int
+	sl = strings.Split(str, " ")
+	for i := 0; i < len(sl); i++ {
+		n, err := strconv.Atoi(sl[i])
 		if err != nil {
-			//	fmt.Print(err)
+			fmt.Print(err)
 		} else {
-			sl = append(sl, n)
+			slInt = append(slInt, n)
 			//fmt.Println(sl[i])
 		}
 	}
-	insertsort(sl)
+	insertsort(slInt)
 
 	file, err := os.Create("stdout.txt")
 	check(err)
 	defer file.Close()
 
-	writeFile(sl)
+	writeFile(slInt, file, err)
 }
 
 func check(err error) {
@@ -42,11 +44,11 @@ func check(err error) {
 	}
 }
 
-func writeFile(p []int) {
+func writeFile(p []int, file *os.File, err error) {
 
-	var file, err = os.OpenFile("stdout.txt", os.O_RDWR, 0644)
-	check(err)
-	defer file.Close()
+	/*	var file, err = os.OpenFile("stdout.txt", os.O_RDWR, 0644)
+		check(err)
+		defer file.Close()*/
 
 	//запись
 	for i := 0; i < len(p); i++ {
